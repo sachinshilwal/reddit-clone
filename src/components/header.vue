@@ -85,7 +85,8 @@ export default {
   width: 100%;
   top: 0;
   left: 0;
-  background-color: white;
+  background-color: black;
+  color: white;
   z-index: 9999;
 }
 
@@ -94,7 +95,7 @@ export default {
   align-items: center;
   width: 120px;
   justify-content: space-evenly;
-  color: #1c1c1c;
+  color: white;
   cursor: pointer;
 }
 
