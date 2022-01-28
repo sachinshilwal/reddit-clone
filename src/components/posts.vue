@@ -7,7 +7,7 @@
       ></i>
 
       <span :class="`vote__count ${upVoted ? 'red' : downVoted ? 'blue' : ''}`">
-        {{ voteCount || VOTE_COUNT }}
+        {{ post.ups }}
       </span>
 
       <i
@@ -17,27 +17,26 @@
     </div>
     <div class="post__content">
       <div class="post__head">
-        <img src="../assets/img/profile-avatar.png" alt="" />
-        <span class="user__name"><strong>r/prabin</strong> </span>
+      <!-- here will be the subreddit icon if possible -->
+        <span class="user__name"><strong><a :href="'https://www.reddit.com/r/'+post.subreddit" style="color:white;text-decoration:none" target="_blank">r/{{post.subreddit}}</a></strong> </span>
         <div class="post__details">
-          <p>• Posted by Prabin 3 hours ago</p>
+          <p>• Posted by <a :href="'https://www.reddit.com/user/'+post.author" style="color:white" target="_blank">u/{{post.author}}</a>  {{new Date(post.created * 1000).getHours() }} hours ago  {{post.domain}}</p>
         </div>
       </div>
       <div class="post__body">
         <div class="post__title">
-          <strong
-            >The Mumbai Indians recreation room looks like a great place to
-            unwind <span class="badge"> Discussion </span>
+          <strong>{{post.title}} <span class="badge" :class="{'nothing': !post.link_flair_text}" :style="{'background-color': post.link_flair_background_color }"
+           id="badge"> {{post.link_flair_text}} </span>
           </strong>
         </div>
-        <div class="post__image">
-          <img src="https://picsum.photos/200/300" alt="" />
+        <div class="post__image" id="media" ref="media">
+          <!-- <img src="https://picsum.photos/200/300" alt="" /> -->
         </div>
       </div>
       <div class="post__footer">
         <div class="post__item">
           <i class="fas fa-comment-alt"></i>
-          <span>24 comments</span>
+          <span>{{post.num_comments}} comments</span>
         </div>
         <div class="post__item">
           <i class="fas fa-gift"></i>
@@ -54,6 +53,9 @@
         <div class="post__item">
           <i class="fas fa-ellipsis-h"></i>
         </div>
+        <div class="upvote-ratio">
+          <span>{{post.upvote_ratio * 100}}% upvoted</span>
+        </div>
       </div>
     </div>
   </div>
@@ -61,13 +63,43 @@
 
 <script>
 export const VOTE_COUNT = 15;
+
+
 export default {
+  props:['post'],
+ async mounted(){
+    if(this.post.media != null){
+        var video = document.createElement("VIDEO")
+        video.setAttribute("controls",'')
+        video.setAttribute("src",this.post.media.reddit_video.fallback_url)
+        video.setAttribute("preload","auto")
+        
+        // var source = document.createElement("SOURCE")
+        // source.setAttribute("preload", "auto")
+        // source.setAttribute("width", "40px")
+        // source.setAttribute("height", "auto")
+        // source.setAttribute("src",this.post.media.reddit_video.fallback_url)
+        // source.setAttribute("type","video/mp4")
+        // video.appendChild(source)
+        this.$refs.media.appendChild(video)
+        
+      }
+      else if(this.post.media == null){
+        var img = document.createElement("IMG")
+        img.setAttribute("src",this.post.url)
+         img.setAttribute("width", "500");
+         img.setAttribute("height", "auto");
+        this.$refs.media.appendChild(img)
+      }
+  },
   data() {
     return {
       VOTE_COUNT,
       voteCount: "",
       upVoted: false,
-      downVoted: false
+      downVoted: false,
+      color: "green",
+      subredditLogo:'',
     };
   },
   methods: {
@@ -97,22 +129,29 @@ export default {
       } else {
         this.downVoted = this.upVoted = false;
       }
-    }
+    },
+    
   }
 };
 </script>
 
 <style>
+#media{
+  overflow: hidden;
+  width: inherit;
+}
 .post {
   margin-top: 20px;
   height: auto;
-  background-color: white;
+  background-color: rgb(37, 36, 36);
   display: flex;
+  align-items: left !important;
   border-radius: 5px;
   padding: 1px;
   width: 100%;
   overflow-y: scroll;
   border: 1px solid #d3d1d1;
+  color: white;
 }
 
 .post:hover {
@@ -123,7 +162,7 @@ export default {
   width: 20px;
   display: flex;
   flex-direction: column;
-  background-color: #f8f9fa;
+  background-color: rgb(37, 36, 36);
   padding: 10px;
 }
 
@@ -151,6 +190,8 @@ export default {
   padding: 5px 10px;
   display: flex;
   flex-direction: column;
+ 
+  width: inherit;
   margin-bottom: 10px;
 }
 
@@ -180,13 +221,13 @@ export default {
   padding: 3px 10px;
   background-color: red;
   font-size: 10px;
-  color: white;
+  color: black;
   border-radius: 30px;
 }
 
 .post__body .post__title {
   display: flex;
-  align-items: center;
+  align-items: left;
 }
 
 .post__image {
@@ -199,8 +240,13 @@ export default {
 .post__footer {
   display: flex;
   color: #7e8081;
+  background-color: rgb(37, 36, 36) !important;
   font-size: 12px;
   justify-content: flex-start;
+  flex-direction: row !important;
+  margin-top: 0px !important;
+  height: auto !important;
+  
 }
 
 .post__item {
@@ -213,6 +259,9 @@ export default {
   margin-right: 5px;
 }
 
+.nothing{
+  display: none;
+}
 .fa-arrow-alt-up,
 .fa-arrow-alt-down {
   cursor: pointer;
@@ -226,6 +275,6 @@ export default {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #909499;
+  background: black;
 }
 </style>

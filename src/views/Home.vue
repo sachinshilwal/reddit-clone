@@ -5,8 +5,7 @@
       <div class="body__left">
         <CreatePost @change="page = 'Submit'" />
         <FilterTags :tags="tags" />
-        <Posts />
-        <Posts />
+        <Posts v-for="(postData,index) in postsData" :key="index" :post= "postData"></Posts>
       </div>
       <div class="body__right">
         <TopGrowingCard />
@@ -28,11 +27,22 @@ import Posts from "../components/posts.vue";
 import TopGrowingCard from "../components/topGrowing.vue";
 import Ads from "../components/ad.vue";
 import SubmitPost from "../components/submitPost/submitPost.vue";
+import axios from 'axios'
+
 export default {
   name: "App",
+  mounted(){
+    axios.get('https://www.reddit.com/top.json?t=day')
+    .then(response => {
+      this.postsData = response.data.data.children.map(data => data.data)
+      console.log(this.postsData)
+    })
+    .catch(err => console.log(err))
+  },
   data() {
     return {
-      page: "Home"
+      page: "Home",
+      postsData: '',
     };
   },
   computed: {
@@ -62,7 +72,7 @@ export default {
     justify-content: center;
     grid-template-columns: 620px 320px;
     gap: 25px;
-    background-color: #DAE0E6;
+    background-color: black;
 }
 
 .home__body .body__left {

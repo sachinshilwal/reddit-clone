@@ -41,7 +41,7 @@ export default {
 .filter__tags {
   margin-top: 20px;
   height: 5vh;
-  background-color: white;
+  background-color: black;
   display: flex;
   padding: 2vh;
   border: 1px solid #d3d1d1;
@@ -49,6 +49,7 @@ export default {
   justify-content: space-between;
   flex-wrap: wrap;
   overflow: hidden;
+  color: white;
 }
 
 .tag__items {
@@ -77,14 +78,14 @@ export default {
   opacity: 1;
   cursor: pointer;
   border-radius: 20px;
-  background: #f8f8f8;
+  background: #6b6a6a;
 }
 
 .tag__item__active {
   border-radius: 20px;
-  color: #0079d3;
+  color: #f0f0f0;
   opacity: 1;
-  background: #f8f8f8;
+  background: #555555;
 }
 
 .filter__right__tags i {

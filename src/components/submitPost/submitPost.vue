@@ -47,7 +47,7 @@ export default {
   gap: 20px;
   flex-direction: row;
   justify-content: center;
-  background-color: #dae0e6;
+  background-color: black;
 }
 
 .submit__post .left__body {
@@ -74,7 +74,7 @@ export default {
 
 .submit__post .top__header .badge span {
   padding: 2px 5px;
-  background-color: rgb(128, 128, 131);
+  background-color: rgb(0, 0, 0);
   color: white;
 }
 
@@ -90,7 +90,7 @@ export default {
 }
 
 .select__community {
-  background-color: white;
+  background-color: rgb(0, 0, 0);
   display: flex;
   align-items: center;
   justify-content: space-between;

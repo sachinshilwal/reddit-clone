@@ -14,7 +14,7 @@ export default {};
 <style>
 .post__card {
   height: 5vh;
-  background-color: white;
+  background-color: black;
   display: flex;
   align-items: center;
   border: 1px solid #d3d1d1;
