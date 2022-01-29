@@ -15,7 +15,7 @@
 
     <div class="search__bar">
       <i class="fas fa-search"></i>
-      <input type="text" placeholder="Search" />
+      <input type="text" placeholder="Search" style="background-color: rgb(26, 25, 25); color: rgb(209, 202, 202)" />
     </div>
 
     <div class="icons__left">
@@ -35,7 +35,7 @@
     </div>
 
     <div class="profile__select" @click="popUp">
-      <div v-if="popUpValue" >
+      <div  >
           <a href="https://www.reddit.com/api/v1/authorize?client_id=v286U8VEQCtiLoEDHaxnGQ&response_type=code&state=VaS6oxHSm1kRnAIb0dAX5nd-abRe6w&redirect_uri=http://localhost:8080&duration=permanent&scope=identity" target="_blank">Sign In</a>
       </div>
       <div class="profile__details">
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+
 export default {
   data(){
     return{
@@ -142,7 +143,7 @@ export default {
 }
 
 .search__bar {
-  background-color: #f8f8f8;
+  background-color: rgb(26, 25, 25);
   padding: 0 15px;
   border-radius: 5px;
   margin: 0 10px;

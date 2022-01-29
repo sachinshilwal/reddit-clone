@@ -1,32 +1,46 @@
 <template>
   <div class="post">
     <div class="left__vote__icons">
-      <i
-        :class="`fas fa-arrow-alt-up ${upVoted ? 'red' : ''}`"
-        @click="increaseVoteCount()"
-      ></i>
+      <i :class="`fas fa-arrow-alt-up ${upVoted ? 'red' : ''}`" @click="increaseVoteCount()"></i>
 
-      <span :class="`vote__count ${upVoted ? 'red' : downVoted ? 'blue' : ''}`">
-        {{ post.ups }}
-      </span>
+      <span :class="`vote__count ${upVoted ? 'red' : downVoted ? 'blue' : ''}`">{{ upVote }}</span>
 
-      <i
-        :class="`fas fa-arrow-alt-down ${downVoted ? 'blue' : ''}`"
-        @click="decreaseVoteCount()"
-      ></i>
+      <i :class="`fas fa-arrow-alt-down ${downVoted ? 'blue' : ''}`" @click="decreaseVoteCount()"></i>
     </div>
     <div class="post__content">
       <div class="post__head">
-      <!-- here will be the subreddit icon if possible -->
-        <span class="user__name"><strong><a :href="'https://www.reddit.com/r/'+post.subreddit" style="color:white;text-decoration:none" target="_blank">r/{{post.subreddit}}</a></strong> </span>
+        <!-- here will be the subreddit icon if possible -->
+        <span class="user__name">
+          <strong>
+            <a
+              :href="'https://www.reddit.com/r/' + post.subreddit"
+              style="color:white;text-decoration:none"
+              target="_blank"
+            >r/{{ post.subreddit }}</a>
+          </strong>
+        </span>
         <div class="post__details">
-          <p>• Posted by <a :href="'https://www.reddit.com/user/'+post.author" style="color:white" target="_blank">u/{{post.author}}</a>  {{new Date(post.created * 1000).getHours() }} hours ago  {{post.domain}}</p>
+          <p>
+            • Posted by
+            <a
+              :href="'https://www.reddit.com/user/' + post.author"
+              style="color:white"
+              target="_blank"
+            >u/{{ post.author }}</a>
+            {{ time }} {{ post.domain }}
+          </p>
         </div>
       </div>
       <div class="post__body">
         <div class="post__title">
-          <strong>{{post.title}} <span class="badge" :class="{'nothing': !post.link_flair_text}" :style="{'background-color': post.link_flair_background_color }"
-           id="badge"> {{post.link_flair_text}} </span>
+          <strong>
+            {{ post.title }}
+            <span
+              class="badge"
+              :class="{ 'nothing': !post.link_flair_text }"
+              :style="{ 'background-color': post.link_flair_background_color }"
+              id="badge"
+            >{{ post.link_flair_text }}</span>
           </strong>
         </div>
         <div class="post__image" id="media" ref="media">
@@ -36,7 +50,7 @@
       <div class="post__footer">
         <div class="post__item">
           <i class="fas fa-comment-alt"></i>
-          <span>{{post.num_comments}} comments</span>
+          <span>{{ post.num_comments }} comments</span>
         </div>
         <div class="post__item">
           <i class="fas fa-gift"></i>
@@ -54,7 +68,7 @@
           <i class="fas fa-ellipsis-h"></i>
         </div>
         <div class="upvote-ratio">
-          <span>{{post.upvote_ratio * 100}}% upvoted</span>
+          <span>{{ post.upvote_ratio * 100 }}% upvoted</span>
         </div>
       </div>
     </div>
@@ -63,34 +77,17 @@
 
 <script>
 export const VOTE_COUNT = 15;
-
+import dayjs from 'dayjs'
 
 export default {
-  props:['post'],
- async mounted(){
-    if(this.post.media != null){
-        var video = document.createElement("VIDEO")
-        video.setAttribute("controls",'')
-        video.setAttribute("src",this.post.media.reddit_video.fallback_url)
-        video.setAttribute("preload","auto")
-        
-        // var source = document.createElement("SOURCE")
-        // source.setAttribute("preload", "auto")
-        // source.setAttribute("width", "40px")
-        // source.setAttribute("height", "auto")
-        // source.setAttribute("src",this.post.media.reddit_video.fallback_url)
-        // source.setAttribute("type","video/mp4")
-        // video.appendChild(source)
-        this.$refs.media.appendChild(video)
-        
-      }
-      else if(this.post.media == null){
-        var img = document.createElement("IMG")
-        img.setAttribute("src",this.post.url)
-         img.setAttribute("width", "500");
-         img.setAttribute("height", "auto");
-        this.$refs.media.appendChild(img)
-      }
+  props: ['post'],
+  async mounted() {
+
+    this.roundUpVote()
+    this.getAwards()
+    this.mountMedia()
+    this.formatTime(this.post.created)
+
   },
   data() {
     return {
@@ -99,7 +96,10 @@ export default {
       upVoted: false,
       downVoted: false,
       color: "green",
-      subredditLogo:'',
+      subredditLogo: '',
+      upVote: "",
+      time: "",
+      
     };
   },
   methods: {
@@ -116,6 +116,55 @@ export default {
         return;
       }
       this.voteCount = VOTE_COUNT - 1;
+    },
+    roundUpVote() {
+      if (this.post.ups > 10000) {
+        let upVote = Math.round(this.post.ups / 1000)
+        this.upVote = upVote + "k"
+      }
+      else {
+        this.upVote = this.post.ups
+      }
+    },
+    getAwards() {
+
+    },
+    formatTime(unixTime){
+      let relativeTime = require('dayjs/plugin/relativeTime')
+      dayjs.extend(relativeTime)
+      let now = dayjs.unix(unixTime)
+      let fromNow = dayjs(now).fromNow()
+      this.time = fromNow
+      console.log(fromNow)
+    },
+    mountMedia() {
+      if (this.post.media != null) {
+        if (this.post.media.reddit_video) {
+          let video = document.createElement("VIDEO")
+          video.setAttribute("controls", '')
+          video.setAttribute("src", this.post.media.reddit_video.fallback_url)
+          video.setAttribute("preload", "auto")
+          video.setAttribute("width", "500px")
+          video.setAttribute("height", "500px")
+          this.$refs.media.appendChild(video)
+        }
+        else {
+          let img = document.createElement("IMG")
+          img.setAttribute("src", this.post.media.oembed.thumbnail_url)
+          this.$refs.media.appendChild(img)
+        }
+
+      }
+      else if (this.post.media == null) {
+        let img = document.createElement("IMG")
+        img.setAttribute("src", this.post.url)
+        img.setAttribute("width", "500");
+        img.setAttribute("height", "auto");
+        this.$refs.media.appendChild(img)
+      }
+    },
+    resetMedia() {
+      this.$refs.media.innerHTML = ""
     }
   },
   watch: {
@@ -130,16 +179,20 @@ export default {
         this.downVoted = this.upVoted = false;
       }
     },
-    
+    async post() {
+      this.resetMedia()
+      this.roundUpVote()
+      this.mountMedia()
+      this.formatTime(this.post.created)
+
+
+    }
+
   }
 };
 </script>
 
 <style>
-#media{
-  overflow: hidden;
-  width: inherit;
-}
 .post {
   margin-top: 20px;
   height: auto;
@@ -190,7 +243,7 @@ export default {
   padding: 5px 10px;
   display: flex;
   flex-direction: column;
- 
+
   width: inherit;
   margin-bottom: 10px;
 }
@@ -246,7 +299,6 @@ export default {
   flex-direction: row !important;
   margin-top: 0px !important;
   height: auto !important;
-  
 }
 
 .post__item {
@@ -259,7 +311,7 @@ export default {
   margin-right: 5px;
 }
 
-.nothing{
+.nothing {
   display: none;
 }
 .fa-arrow-alt-up,
