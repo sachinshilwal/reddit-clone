@@ -33,6 +33,13 @@ export default {
       var result = val === this.selected ? classActive : classInactive;
       return result;
     }
+  },
+  watch: {
+    selected(val) {
+      this.$emit("selected", val);
+      // this.$router.replace(`/${val}`);
+      console.log(val)
+    }
   }
 };
 </script>

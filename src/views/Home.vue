@@ -4,7 +4,7 @@
     <div v-if="page == 'Home'" class="home__body">
       <div class="body__left">
         <CreatePost @change="page = 'Submit'" />
-        <FilterTags :tags="tags" />
+        <FilterTags :tags="tags" @selected="changeFilter" />
         <Posts v-for="(postData,index) in postsData" :key="index" :post= "postData"></Posts>
       </div>
       <div class="body__right">
@@ -43,13 +43,72 @@ export default {
     return {
       page: "Home",
       postsData: '',
+      filter:'',
     };
+  },
+  methods:{
+    changeFilter(val){
+      this.filter = val
+      
+    }
   },
   computed: {
     tags() {
       return states.tags.map(item => {
         return item;
       });
+    }
+  },
+  watch:{
+    filter(val){
+      if(val == 'Top'){
+        axios.get('https://www.reddit.com/top.json?t=day')
+        .then(response => {
+          this.postsData = response.data.data.children.map(data => data.data)
+          console.log(this.postsData)
+        })
+        .catch(err => console.log(err))
+      }
+      else if(val == 'New'){
+        axios.get('https://www.reddit.com/new.json')
+        .then(response => {
+          this.postsData = response.data.data.children.map(data => data.data)
+          console.log(this.postsData)
+        })
+        .catch(err => console.log(err))
+      }
+      else if(val == 'Hot'){
+        axios.get('https://www.reddit.com/hot.json')
+        .then(response => {
+          this.postsData = response.data.data.children.map(data => data.data)
+          console.log(this.postsData)
+        })
+        .catch(err => console.log(err))
+      }
+      else if(val == 'Best'){
+        axios.get('https://www.reddit.com/best.json')
+        .then(response => {
+          this.postsData = response.data.data.children.map(data => data.data)
+          console.log(this.postsData)
+        })
+        .catch(err => console.log(err))
+      }
+      else if(val == 'Controversial'){
+        axios.get('https://www.reddit.com/controversial.json')
+        .then(response => {
+          this.postsData = response.data.data.children.map(data => data.data)
+          console.log(this.postsData)
+        })
+        .catch(err => console.log(err))
+      }
+      else if(val == 'Rising'){
+        axios.get('https://www.reddit.com/rising.json')
+        .then(response => {
+          this.postsData = response.data.data.children.map(data => data.data)
+          console.log(this.postsData)
+        })
+        .catch(err => console.log(err))
+      }
     }
   },
   components: {
@@ -70,7 +129,7 @@ export default {
     display: grid;
     height: auto;
     justify-content: center;
-    grid-template-columns: 620px 320px;
+    grid-template-columns: 720px 260px;
     gap: 25px;
     background-color: black;
 }
