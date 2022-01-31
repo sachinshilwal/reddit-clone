@@ -1,7 +1,16 @@
 <template>
   <router-view/>
+  <div @click="haha">nice try</div>
 </template>
 
+<script>
+  export default {
+    created(){
+      console.log('created')
+      
+    }
+  }
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
