@@ -9,25 +9,28 @@
     </div>
     <div class="post__content">
       <div class="post__head">
-        <!-- here will be the subreddit icon if possible -->
-        <span class="user__name">
-          <strong>
-            <a
-              :href="'https://www.reddit.com/r/' + post.subreddit"
-              style="color:white;text-decoration:none"
-              target="_blank"
-            >r/{{ post.subreddit }}</a>
-          </strong>
-        </span>
+        <a
+          :href="'https://www.reddit.com/r/' + post.subreddit"
+          target="_blank"
+        >
+          <!-- here will be the subreddit icon if possible -->
+          <span class="subreddit-logo"><img :src="subredditLogo" /></span>
+          
+          <span class="subreddit-name">
+            <strong>r/{{ post.subreddit }}</strong>
+          </span>
+        </a>
         <div class="post__details">
           <p>
-            • Posted by
+            . Posted by
             <a
               :href="'https://www.reddit.com/user/' + post.author"
-              style="color:white"
+              
               target="_blank"
-            >u/{{ post.author }}</a>
-            {{ time }} {{ post.domain }}
+            >u/{{ post.author}} </a>
+            <span class="posted-time">{{ time }}
+               <!-- <span class="date-hover">{{new Date(post.created)}}</span> -->
+            </span> {{ post.domain }}
           </p>
         </div>
       </div>
@@ -77,7 +80,9 @@
 
 <script>
 export const VOTE_COUNT = 15;
+
 import dayjs from 'dayjs'
+import axiosrequest from '../Services/AxiosRequest.js'
 
 export default {
   props: ['post'],
@@ -87,6 +92,7 @@ export default {
     this.getAwards()
     this.mountMedia()
     this.formatTime(this.post.created)
+    this.subredditIcon()
 
   },
   data() {
@@ -99,7 +105,7 @@ export default {
       subredditLogo: '',
       upVote: "",
       time: "",
-      
+
     };
   },
   methods: {
@@ -129,13 +135,27 @@ export default {
     getAwards() {
 
     },
-    formatTime(unixTime){
+    formatTime(unixTime) {
       let relativeTime = require('dayjs/plugin/relativeTime')
       dayjs.extend(relativeTime)
       let now = dayjs.unix(unixTime)
       let fromNow = dayjs(now).fromNow()
       this.time = fromNow
-      console.log(fromNow)
+    },
+    subredditIcon() {
+
+      axiosrequest.getdata(`https://www.reddit.com/r/${this.post.subreddit}/about.json`)
+        .then(res => {
+          if (res.data.data.icon_img !== null || res.data.data.icon_img !== "") {
+            this.subredditLogo = res.data.data.icon_img
+          }
+
+          else {
+            this.subredditLogo = res.data.data.header_img
+          }
+
+        })
+        .catch(err => console.log(err))
     },
     mountMedia() {
       if (this.post.media != null) {
@@ -192,7 +212,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .post {
   margin-top: 20px;
   height: auto;
@@ -203,8 +223,11 @@ export default {
   padding: 1px;
   width: 100%;
   overflow-y: scroll;
-  border: 1px solid #d3d1d1;
+  border: 1px solid #3b3b3b;
   color: white;
+  &:hover {
+    border: 1px solid #d3d1d1;
+  }
 }
 
 .post:hover {
@@ -241,9 +264,8 @@ export default {
 
 .post__content {
   padding: 5px 10px;
-  display: flex;
+  display: flex, block;
   flex-direction: column;
-
   width: inherit;
   margin-bottom: 10px;
 }
@@ -253,15 +275,52 @@ export default {
   align-items: center;
   height: 30px;
   font-size: 12px;
+  a{
+    color:white;
+    text-decoration:none;
+    &:hover{
+      text-decoration:underline;
+    }
+  }
+  
 }
 
-.post__head .user__name {
-  margin: 0 10px;
+.post__head  {
+  margin-top: 0px !important;
   opacity: 1;
+}
+.subreddit-name{
+  strong{
+  margin: 0px !important;
+  padding: 0px !important;
+  opacity: 1;
+  }
 }
 
 .post__head .post__details {
   opacity: 0.7;
+  margin-top: 4px;
+  a{
+    color:white;
+    text-decoration: none;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  .posted-time{
+    .date-hover{
+      display: none;
+    }
+    &::before{
+      content: " ";
+    }
+    &:hover{
+      .date-hover{
+        display: block;
+      }
+    
+    }
+  }
 }
 
 .post__content .post__head img {

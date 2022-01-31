@@ -35,8 +35,8 @@
     </div>
 
     <div class="profile__select" @click="popUp">
-      <div  >
-          <a href="https://www.reddit.com/api/v1/authorize?client_id=v286U8VEQCtiLoEDHaxnGQ&response_type=code&state=VaS6oxHSm1kRnAIb0dAX5nd-abRe6w&redirect_uri=http://localhost:8080&duration=permanent&scope=identity" target="_blank">Sign In</a>
+      <div>
+         <LoginControl />
       </div>
       <div class="profile__details">
         <i class="fas fa-user"></i>
@@ -54,8 +54,11 @@
 </template>
 
 <script>
-
+import LoginControl from './LoginControl.vue'
 export default {
+  components:{
+    LoginControl,
+  },
   data(){
     return{
       userInfo: {

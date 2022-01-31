@@ -5,11 +5,11 @@
       <div class="body__left">
         <CreatePost @change="page = 'Submit'" />
         <FilterTags :tags="tags" @selected="changeFilter" />
-        <Posts v-for="(postData,index) in postsData" :key="index" :post= "postData"></Posts>
+        <Posts v-for="(postData, index) in postsData" :key="index" :post="postData"></Posts>
       </div>
       <div class="body__right">
-        <TopGrowingCard />
-        <Ads />
+        <!-- <TopGrowingCard />
+        <Ads /> -->
       </div>
     </div>
     <div v-else-if="page == 'Submit'">
@@ -24,34 +24,44 @@ import Header from "../components/header";
 import CreatePost from "../components/postCard";
 import FilterTags from "../components/filterTags";
 import Posts from "../components/posts.vue";
-import TopGrowingCard from "../components/topGrowing.vue";
-import Ads from "../components/ad.vue";
+// import TopGrowingCard from "../components/topGrowing.vue";
+// import Ads from "../components/ad.vue";
 import SubmitPost from "../components/submitPost/submitPost.vue";
-import axios from 'axios'
+import axiosrequest from '../Services/AxiosRequest.js'
+
 
 export default {
   name: "App",
-  mounted(){
-    axios.get('https://www.reddit.com/top.json?t=day')
-    .then(response => {
-      this.postsData = response.data.data.children.map(data => data.data)
-      console.log(this.postsData)
-    })
-    .catch(err => console.log(err))
+   mounted() {
+    axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
+      .then(response => {
+        this.postsData = response.data.data.children.map(data => data.data)
+        console.log(this.postsData)
+      })
+      .catch(err => console.log(err))
+
+     this.checkRoute()
   },
   data() {
     return {
       page: "Home",
       postsData: '',
-      filter:'',
+      filter: '',
     };
   },
-  methods:{
-    changeFilter(val){
+  methods: {
+    changeFilter(val) {
       this.filter = val
-      
-    }
-  },
+    },
+    checkRoute(){
+      if(this.$route.params.filter == 'top'){
+        this.filter = 'top'
+      }
+      else if(this.$route.params.filter == 'new'){
+        this.filter = 'new'
+      }
+      },
+    },
   computed: {
     tags() {
       return states.tags.map(item => {
@@ -59,55 +69,61 @@ export default {
       });
     }
   },
-  watch:{
-    filter(val){
-      if(val == 'Top'){
-        axios.get('https://www.reddit.com/top.json?t=day')
-        .then(response => {
-          this.postsData = response.data.data.children.map(data => data.data)
-          console.log(this.postsData)
-        })
-        .catch(err => console.log(err))
+  watch: {
+    filter(val) {
+      if (val == 'Top') {
+        this.$router.replace('/top', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+          
+          })
+          .catch(err => console.log(err))
       }
-      else if(val == 'New'){
-        axios.get('https://www.reddit.com/new.json')
-        .then(response => {
-          this.postsData = response.data.data.children.map(data => data.data)
-          console.log(this.postsData)
-        })
-        .catch(err => console.log(err))
+      else if (val == 'New') {
+        this.$router.replace('/new', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/new.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+            
+          })
+          .catch(err => console.log(err))
       }
-      else if(val == 'Hot'){
-        axios.get('https://www.reddit.com/hot.json')
-        .then(response => {
-          this.postsData = response.data.data.children.map(data => data.data)
-          console.log(this.postsData)
-        })
-        .catch(err => console.log(err))
+      else if (val == 'Hot') {
+        this.$router.replace('/hot', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/hot.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+          
+          })
+          .catch(err => console.log(err))
       }
-      else if(val == 'Best'){
-        axios.get('https://www.reddit.com/best.json')
-        .then(response => {
-          this.postsData = response.data.data.children.map(data => data.data)
-          console.log(this.postsData)
-        })
-        .catch(err => console.log(err))
+      else if (val == 'Best') {
+        this.$router.replace('/best', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/best.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+           
+          })
+          .catch(err => console.log(err))
       }
-      else if(val == 'Controversial'){
-        axios.get('https://www.reddit.com/controversial.json')
-        .then(response => {
-          this.postsData = response.data.data.children.map(data => data.data)
-          console.log(this.postsData)
-        })
-        .catch(err => console.log(err))
+      else if (val == 'Controversial') {
+        this.$router.replace('/controversial', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/controversial.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+           
+          })
+          .catch(err => console.log(err))
       }
-      else if(val == 'Rising'){
-        axios.get('https://www.reddit.com/rising.json')
-        .then(response => {
-          this.postsData = response.data.data.children.map(data => data.data)
-          console.log(this.postsData)
-        })
-        .catch(err => console.log(err))
+      else if (val == 'Rising') {
+        this.$router.replace('/rising', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/rising.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+            
+          })
+          .catch(err => console.log(err))
       }
     }
   },
@@ -116,8 +132,8 @@ export default {
     CreatePost,
     FilterTags,
     Posts,
-    TopGrowingCard,
-    Ads,
+    // TopGrowingCard,
+    // Ads,
     SubmitPost
   }
 };
@@ -125,39 +141,39 @@ export default {
 
 <style>
 .home__body {
-    margin-top: 10vh;
-    display: grid;
-    height: auto;
-    justify-content: center;
-    grid-template-columns: 720px 260px;
-    gap: 25px;
-    background-color: black;
+  margin-top: 10vh;
+  display: grid;
+  height: auto;
+  justify-content: center;
+  grid-template-columns: 720px 260px;
+  gap: 25px;
+  background-color: black;
 }
 
 .home__body .body__left {
-    height: auto;
+  height: auto;
 }
 
 .home__body .body__right {
-    height: auto;
+  height: auto;
 }
 
-@media screen and (max-width:1000px) {
-    .home__body {
-        grid-template-columns: repeat(auto-fit, minmax(620px, 0.7fr));
-    }
+@media screen and (max-width: 1000px) {
+  .home__body {
+    grid-template-columns: repeat(auto-fit, minmax(620px, 0.7fr));
+  }
 }
 
 @media screen and (max-width: 650px) {
-    .home__body {
-        grid-template-columns: repeat(auto-fit, minmax(400px, 0.7fr));
-    }
+  .home__body {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 0.7fr));
+  }
 }
 
 @media screen and (max-width: 450px) {
-    .home__body {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
+  .home__body {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 }
 #app {
   font-family: Verdana, Arial, Helvetica, sans-serif;

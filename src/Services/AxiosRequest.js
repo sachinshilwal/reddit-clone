@@ -10,8 +10,8 @@ const redditApiContents = axios.create({
 })
 
 export default {
-    getPosts(){
-        return redditApiContents.get('/posts')
+    getdata(request){
+        return redditApiContents.get(request)
     }
 }
 
