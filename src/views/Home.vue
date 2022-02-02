@@ -20,14 +20,15 @@
 
 <script>
 import states from "../assets/data.json";
-import Header from "../components/header";
-import CreatePost from "../components/postCard";
-import FilterTags from "../components/filterTags";
-import Posts from "../components/posts.vue";
+import Header from "../components/Header";
+import CreatePost from "../components/PostCard";
+import FilterTags from "../components/FilterTags";
+import Posts from "../components/Posts";
 // import TopGrowingCard from "../components/topGrowing.vue";
 // import Ads from "../components/ad.vue";
-import SubmitPost from "../components/submitPost/submitPost.vue";
+import SubmitPost from "../components/submitPost/SubmitPost";
 import axiosrequest from '../Services/AxiosRequest.js'
+import { mapGetters } from 'vuex'
 
 
 export default {
@@ -36,7 +37,7 @@ export default {
     axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
       .then(response => {
         this.postsData = response.data.data.children.map(data => data.data)
-        console.log(this.postsData)
+        
       })
       .catch(err => console.log(err))
 
@@ -67,9 +68,17 @@ export default {
       return states.tags.map(item => {
         return item;
       });
-    }
+    },
+    ...mapGetters({
+        myState: 'getMyState'
+    })
+    
   },
   watch: {
+    myState(){
+      console.log('refresh')
+       location.reload()
+      },
     filter(val) {
       if (val == 'Top') {
         this.$router.replace('/top', { silent: true })

@@ -35,19 +35,11 @@
     </div>
 
     <div class="profile__select" @click="popUp">
-      <div>
+      <div v-if="!isSignedIn">
          <LoginControl />
       </div>
-      <div class="profile__details">
-        <i class="fas fa-user"></i>
-        <div class="user__profile">
-          <label>{{userInfo.name}}</label>
-          <span class="karma__details">
-            <i class="fas fa-cog"></i>
-          <span>{{userInfo.karma}} karma</span>
-          </span>
-        </div>
-      </div>
+      <div v-else><Profile /></div>
+      
       <i class="fas fa-sort-down"></i>
     </div>
   </div>
@@ -55,16 +47,21 @@
 
 <script>
 import LoginControl from './LoginControl.vue'
+import Profile from './Profile.vue'
+
 export default {
   components:{
     LoginControl,
+    Profile
+  },
+  mounted(){
+    
   },
   data(){
     return{
       userInfo: {
         name: 'Guest',
         karma: '0',},
-      isSignedIn: false,
       popUpValue: false,
     }
   },
@@ -75,8 +72,13 @@ export default {
     popUp(){
       this.popUpValue = !this.popUpValue;
     }
-  }
-};
+  },
+  computed:{
+    isSignedIn(){
+      return this.$store.state.isLoggedIn
+    }
+  },
+  };
 </script>
 
 <style>
