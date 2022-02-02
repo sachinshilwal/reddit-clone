@@ -1,24 +1,18 @@
 <template>
-    <a
-        href="https://www.reddit.com/api/v1/authorize?client_id=v286U8VEQCtiLoEDHaxnGQ&response_type=code&state=VaS6oxHSm1kRnAIb0dAX5nd-abRe6w&redirect_uri=http://localhost:8080/login&duration=permanent&scope=identity+edit+flair+history+modconfig+modflair+modlog+modposts+modwiki+mysubreddits+privatemessages+read+report+save+submit+subscribe+vote+wikiedit+wikiread"
-        target="_blank" 
-    >Sign In</a>
+<div>you will be redirected shortly</div>
+    
 </template>
-<script>
 
-export default {
-    data(){
-        return{
-            gotBearerToken: false,
-            bearerToken: '',
-        }
-    },
-    mounted() {
-        
-    },
-    methods: {
-        getToken() {
-            if (this.$route.query.code && this.$route.query.state) {
+<script>
+    export default {
+        created(){
+            this.getInfo()
+            
+        },
+        mounted(){window.close()},
+        methods:{
+         async   getInfo(){
+                if (this.$route.query.code && this.$route.query.state) {
                 let axios = require('axios');
                  let qs = require('qs');
                  let data = qs.stringify({
@@ -38,17 +32,25 @@ export default {
                 };
 
                 axios(config)
-                    .then(function (response) {
+                    .then( (response) => {
+                        console.log(response.data)
+                        this.$store.dispatch('login', response.data)
+                        this.$store.commit('REFRESH')
+                        location.close()
                         
-                        console.log(response.data);
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        console.log(error)
                     });
             }
+            }
         }
+        
     }
-
-}
-
 </script>
+
+<style scoped>
+ div{
+     color: green;
+ }
+</style>

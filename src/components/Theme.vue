@@ -1,0 +1,3 @@
+<template>
+    Dark/ Bright
+</template>
