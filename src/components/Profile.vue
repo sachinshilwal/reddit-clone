@@ -1,7 +1,7 @@
 <template>
    <div>
         <div class="profile__details" >
-        <img :src="infos.icon_img" height="31.2" width="31.2" alt="">
+        <img :src="infos.icon_img" height="31.2" width="31.2" alt="" style="background-color:rgb(32, 34, 34); border-radius: 60%">
         <div class="user__profile">
           <label>{{infos.name}}  </label>
           <span class="karma__details" >

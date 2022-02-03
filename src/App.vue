@@ -86,12 +86,7 @@ export default {
     }
 
   },
-  watch:{
-    
-  },
-  computed:{
-    
-  }
+ 
  
 
 }
