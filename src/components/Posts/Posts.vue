@@ -1,5 +1,6 @@
 <template>
   <div class="post">
+    
     <div class="left__vote__icons">
       <i :class="`fas fa-arrow-alt-up ${upVoted ? 'red' : ''}`" @click="increaseVoteCount()"></i>
 
@@ -8,32 +9,7 @@
       <i :class="`fas fa-arrow-alt-down ${downVoted ? 'blue' : ''}`" @click="decreaseVoteCount()"></i>
     </div>
     <div class="post__content">
-      <div class="post__head">
-        <a
-          :href="'https://www.reddit.com/r/' + post.subreddit"
-          target="_blank"
-        >
-          <!-- here will be the subreddit icon if possible -->
-          <span class="subreddit-logo"><img :src="subredditLogo" /></span>
-          
-          <span class="subreddit-name">
-            <strong>r/{{ post.subreddit }}</strong>
-          </span>
-        </a>
-        <div class="post__details">
-          <p>
-            . Posted by
-            <a
-              :href="'https://www.reddit.com/user/' + post.author"
-              
-              target="_blank"
-            >u/{{ post.author}} </a>
-            <span class="posted-time">{{ time }}
-               <!-- <span class="date-hover">{{new Date(post.created)}}</span> -->
-            </span> {{ post.domain }}
-          </p>
-        </div>
-      </div>
+     <PostsHead :post="post" :subredditLogo="subredditLogo" :time="time"/>
       <div class="post__body">
         <div class="post__title">
           <strong>
@@ -51,28 +27,7 @@
         </div>
       </div>
       <div class="post__footer">
-        <div class="post__item">
-          <i class="fas fa-comment-alt"></i>
-          <span>{{ post.num_comments }} comments</span>
-        </div>
-        <div class="post__item">
-          <i class="fas fa-gift"></i>
-          <span>Give Award</span>
-        </div>
-        <div class="post__item">
-          <i class="fas fa-share"></i>
-          <span>Share</span>
-        </div>
-        <div class="post__item">
-          <i class="fas fa-bookmark"></i>
-          <span>Save</span>
-        </div>
-        <div class="post__item">
-          <i class="fas fa-ellipsis-h"></i>
-        </div>
-        <div class="upvote-ratio">
-          <span>{{ post.upvote_ratio * 100 }}% upvoted</span>
-        </div>
+        <PostFooter :post="post" />
       </div>
     </div>
   </div>
@@ -82,9 +37,12 @@
 export const VOTE_COUNT = 15;
 
 import dayjs from 'dayjs'
-import axiosrequest from '../Services/AxiosRequest.js'
+import PostsHead from './PostsHead.vue'
+import PostFooter from './PostFooter.vue'
+import axiosrequest from '../../Services/AxiosRequest.js'
 
 export default {
+  components:{PostsHead, PostFooter},
   props: ['post'],
   async mounted() {
 
@@ -135,7 +93,7 @@ export default {
     getAwards() {
 
     },
-    formatTime(unixTime) {
+    formatTime(unixTime) {                                      //plugin to display time in "ago format"
       let relativeTime = require('dayjs/plugin/relativeTime')
       dayjs.extend(relativeTime)
       let now = dayjs.unix(unixTime)
@@ -204,8 +162,6 @@ export default {
       this.roundUpVote()
       this.mountMedia()
       this.formatTime(this.post.created)
-
-
     }
 
   }

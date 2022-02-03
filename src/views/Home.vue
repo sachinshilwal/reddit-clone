@@ -23,7 +23,7 @@ import states from "../assets/data.json";
 import Header from "../components/Header";
 import CreatePost from "../components/PostCard";
 import FilterTags from "../components/FilterTags";
-import Posts from "../components/Posts";
+import Posts from "../components/Posts/Posts";
 // import TopGrowingCard from "../components/topGrowing.vue";
 // import Ads from "../components/ad.vue";
 import SubmitPost from "../components/submitPost/SubmitPost";
@@ -37,6 +37,7 @@ export default {
     axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
       .then(response => {
         this.postsData = response.data.data.children.map(data => data.data)
+        console.log(this.postsData)
         
       })
       .catch(err => console.log(err))
@@ -75,7 +76,7 @@ export default {
     
   },
   watch: {
-    myState(){
+    myState(){                                //refresh window after getting the login details 
       console.log('refresh')
        location.reload()
       },
@@ -94,6 +95,7 @@ export default {
         axiosrequest.getdata('https://www.reddit.com/new.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
+            console.log(this.postsData)
             
           })
           .catch(err => console.log(err))
