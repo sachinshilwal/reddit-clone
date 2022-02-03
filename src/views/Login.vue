@@ -1,5 +1,5 @@
 <template>
-<div>you will be redirected shortly</div>
+<div>you will be redirected shortly, if not please close this tab manually</div>
     
 </template>
 
@@ -31,12 +31,12 @@
                     data: data
                 };
 
-                axios(config)
+               await axios(config)
                     .then( (response) => {
                         console.log(response.data)
                         this.$store.dispatch('login', response.data)
                         this.$store.commit('REFRESH')
-                        location.close()
+                        
                         
                     })
                     .catch(function (error) {
