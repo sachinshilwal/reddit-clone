@@ -9,7 +9,6 @@
             this.getInfo()
             
         },
-        mounted(){window.close()},
         methods:{
          async   getInfo(){
                 if (this.$route.query.code && this.$route.query.state) {

@@ -1,6 +1,6 @@
 <template>
+<div class="post-comment">
   <div class="post">
-    
     <div class="left__vote__icons">
       <i :class="`fas fa-arrow-alt-up ${upVoted ? 'red' : ''}`" @click="increaseVoteCount()"></i>
 
@@ -27,9 +27,15 @@
         </div>
       </div>
       <div class="post__footer">
-        <PostFooter :post="post" />
+        <PostFooter :post="post" @getCommentTree="getComment" />
       </div>
+
     </div>
+    
+  </div>
+  <div v-if="showComment">
+    <Comments  v-for="(comment, index) in comments" :key="index" :comment="comment"  />
+  </div>
   </div>
 </template>
 
@@ -39,10 +45,11 @@ export const VOTE_COUNT = 15;
 import dayjs from 'dayjs'
 import PostsHead from './PostsHead.vue'
 import PostFooter from './PostFooter.vue'
+import Comments from './Comments.vue'
 import axiosrequest from '../../Services/AxiosRequest.js'
 
 export default {
-  components:{PostsHead, PostFooter},
+  components:{PostsHead, PostFooter,Comments},
   props: ['post'],
   async mounted() {
 
@@ -63,10 +70,21 @@ export default {
       subredditLogo: '',
       upVote: "",
       time: "",
+      showComment: false,
+      comments:[],
 
     };
   },
   methods: {
+    getComment(){
+      this.showComment = !this.showComment
+                axiosrequest.oauth(`https://oauth.reddit.com${this.post.permalink}`)
+                .then(res => {
+                    this.comments = res.data[1].data.children
+                    console.log(this.comments)               
+                    
+                })
+            },
     increaseVoteCount() {
       if (this.upVoted) {
         this.voteCount = "";
@@ -178,16 +196,17 @@ export default {
   border-radius: 5px;
   padding: 1px;
   width: 100%;
-  overflow-y: scroll;
+  overflow: hidden;
   border: 1px solid #3b3b3b;
   color: white;
   &:hover {
     border: 1px solid #d3d1d1;
   }
 }
-
-.post:hover {
-  border: 1px solid rgb(153, 152, 152);
+.post-comment{
+  &:hover {
+    border: 1px solid #d3d1d1;
+  }
 }
 
 .left__vote__icons {
@@ -310,15 +329,18 @@ export default {
   color: #7e8081;
   background-color: rgb(37, 36, 36) !important;
   font-size: 12px;
-  justify-content: flex-start;
   flex-direction: row !important;
   margin-top: 0px !important;
   height: auto !important;
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .post__item {
   margin: 0 5px;
   display: flex;
+  justify-content: space-evenly !important;
   align-items: center;
   font-weight: bold;
 }
