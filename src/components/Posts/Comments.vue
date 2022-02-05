@@ -34,7 +34,7 @@ import dayjs from 'dayjs'
                 },
             roundUpVote() {
                     if (this.comment.data.ups > 10000) {
-                        let upVote = Math.round(this.post.ups / 1000)
+                        let upVote = Math.round(this.comment.data.ups / 1000)
                         this.upVote = upVote + "k"
                     }
                     else {

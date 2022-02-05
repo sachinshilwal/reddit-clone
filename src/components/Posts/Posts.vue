@@ -22,9 +22,11 @@
             >{{ post.link_flair_text }}</span>
           </strong>
         </div>
+        <a :href="post.url" target="_blank">
         <div class="post__image" id="media" ref="media">
           <!-- <img src="https://picsum.photos/200/300" alt="" /> -->
         </div>
+        </a>
       </div>
       <div class="post__footer">
         <PostFooter :post="post" @getCommentTree="getComment" />
@@ -140,8 +142,8 @@ export default {
           video.setAttribute("controls", '')
           video.setAttribute("src", this.post.media.reddit_video.fallback_url)
           video.setAttribute("preload", "auto")
-          video.setAttribute("width", "500px")
-          video.setAttribute("height", "500px")
+          video.setAttribute("width", "400px")
+          video.setAttribute("height", "auto")
           this.$refs.media.appendChild(video)
         }
         else {
@@ -154,7 +156,7 @@ export default {
       else if (this.post.media == null) {
         let img = document.createElement("IMG")
         img.setAttribute("src", this.post.url)
-        img.setAttribute("width", "500");
+        img.setAttribute("width", "350");
         img.setAttribute("height", "auto");
         this.$refs.media.appendChild(img)
       }
@@ -325,7 +327,7 @@ export default {
 }
 
 .post__footer {
-  display: flex;
+  display: flex !important;
   color: #7e8081;
   background-color: rgb(37, 36, 36) !important;
   font-size: 12px;
