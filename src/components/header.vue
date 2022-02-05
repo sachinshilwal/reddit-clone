@@ -35,7 +35,7 @@
     </div>
 
     <div class="profile__select" @click="popUp">
-      <div v-if="!isSignedIn">
+      <div v-if="!isSignedIn" style="width: 100%;">
          <LoginControl />
       </div>
       <div v-else><Profile /></div>
@@ -83,7 +83,7 @@ export default {
 
 <style>
 .header {
-  height: 7vh;
+  height: 48px;
   display: flex;
   align-items: center;
   padding: 0 10px;
@@ -214,10 +214,10 @@ export default {
 .profile__select {
   margin-left: 10px;
   display: flex;
-  height: 3vh;
+  height: auto;
   flex: 1;
-  padding: 10px;
-  justify-content: space-between;
+  padding: 1px;
+  /* justify-content: space-between; */
   margin-right: 20px;
 }
 

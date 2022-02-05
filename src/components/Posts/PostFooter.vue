@@ -39,7 +39,5 @@
 </script>
 
 <style lang="scss">
-span::after{
-  content: " " !important;
-}
+
 </style>
