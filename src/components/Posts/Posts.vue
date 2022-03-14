@@ -54,7 +54,7 @@ export default {
   components:{PostsHead, PostFooter,Comments},
   props: ['post'],
   async mounted() {
-
+    console.log(this.post)
     this.roundUpVote()
     this.getAwards()
     this.mountMedia()
@@ -153,12 +153,19 @@ export default {
         }
 
       }
-      else if (this.post.media == null) {
+      else if ( this.post.post_hint === "image") {
         let img = document.createElement("IMG")
         img.setAttribute("src", this.post.url)
         img.setAttribute("width", "350");
         img.setAttribute("height", "auto");
         this.$refs.media.appendChild(img)
+      }
+      else if(this.post.post_hint === "link"){
+        let a = document.createElement("A")
+        a.setAttribute("href", this.post.url)
+        a.setAttribute("target", "_blank")
+        a.innerText = "Link(external URL)"
+        this.$refs.media.appendChild(a)
       }
     },
     resetMedia() {
