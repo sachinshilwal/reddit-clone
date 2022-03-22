@@ -1,6 +1,6 @@
 <template>
-<div class="post-comment">
-  <div class="post">
+<div class="post-comment" @click="postClicked">
+  <div class="post" >
     <div class="left__vote__icons">
       <i :class="`fas fa-arrow-alt-up ${upVoted ? 'red' : ''}`" @click="increaseVoteCount()"></i>
 
@@ -10,7 +10,7 @@
     </div>
     <div class="post__content">
      <PostsHead :post="post" :subredditLogo="subredditLogo" :time="time"/>
-      <div class="post__body">
+      <div class="post__body" ref="ok">
         <div class="post__title">
           <strong>
             {{ post.title }}
@@ -23,7 +23,7 @@
           </strong>
         </div>
         <a :href="post.url" target="_blank">
-        <div class="post__image" id="media" ref="media">
+        <div class="post__image"  ref="media">
           <!-- <img src="https://picsum.photos/200/300" alt="" /> -->
         </div>
         </a>
@@ -43,6 +43,7 @@
 
 <script>
 export const VOTE_COUNT = 15;
+import 'video.js/dist/video-js.css'
 
 import dayjs from 'dayjs'
 import PostsHead from './PostsHead.vue'
@@ -78,6 +79,9 @@ export default {
     };
   },
   methods: {
+    postClicked(){
+      console.log("clicked")
+    },
     getComment(){
       this.showComment = !this.showComment
                 axiosrequest.oauth(`https://oauth.reddit.com${this.post.permalink}`)
@@ -139,12 +143,25 @@ export default {
       if (this.post.media != null) {
         if (this.post.media.reddit_video) {
           let video = document.createElement("VIDEO")
+          // let audioSource = this.post.media.reddit_video.fallback_url
+          // audioSource = audioSource.replace(/([_])\w+/, '_audio')                    //regex . fucking hard man ngl
+          
+          // let audioVideo = new Audio(audioSource)
+          
           video.setAttribute("controls", '')
+          
           video.setAttribute("src", this.post.media.reddit_video.fallback_url)
           video.setAttribute("preload", "auto")
           video.setAttribute("width", "400px")
+
           video.setAttribute("height", "auto")
           this.$refs.media.appendChild(video)
+          
+          // this.$refs.ok.addEventListener('click', function () {
+          //   console.log('clicked')
+          //   audioVideo.play()})
+          //let videoTag = document.getElementById('audioVideo')
+          
         }
         else {
           let img = document.createElement("IMG")
@@ -170,6 +187,9 @@ export default {
     },
     resetMedia() {
       this.$refs.media.innerHTML = ""
+    },
+    closeComment(){
+      this.showComment = false
     }
   },
   watch: {

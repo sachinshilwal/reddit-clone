@@ -6,6 +6,7 @@
         <CreatePost @change="page = 'Submit'" />
         <FilterTags :tags="tags" @selected="changeFilter" />
         <Posts v-for="(postData, index) in postsData" :key="index" :post="postData"></Posts>
+        <MorePosts :post="postsData" ></MorePosts>
       </div>
       <div class="body__right">
         <!-- <TopGrowingCard />
@@ -24,6 +25,7 @@ import Header from "../components/Header";
 import CreatePost from "../components/PostCard";
 import FilterTags from "../components/FilterTags";
 import Posts from "../components/Posts/Posts";
+import MorePosts from "../components/Posts/MorePosts";
 // import TopGrowingCard from "../components/topGrowing.vue";
 // import Ads from "../components/ad.vue";
 import SubmitPost from "../components/submitPost/SubmitPost";
@@ -33,15 +35,15 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: "App",
-   mounted() {
-    axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
+  async mounted() {
+     this.$router.replace('/top.json?t=day', { silent: true })
+    await axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
       .then(response => {
         this.postsData = response.data.data.children.map(data => data.data)
         console.log(this.postsData)
         
       })
       .catch(err => console.log(err))
-
      this.checkRoute()
   },
   data() {
@@ -81,8 +83,9 @@ export default {
        location.reload()
       },
     filter(val) {
+      this.$store.commit('FILTER_CHANGED')
       if (val == 'Top') {
-        this.$router.replace('/top', { silent: true })
+        this.$router.replace('/top.json?t=day', { silent: true })
         axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
@@ -143,6 +146,7 @@ export default {
     CreatePost,
     FilterTags,
     Posts,
+    MorePosts,
     // TopGrowingCard,
     // Ads,
     SubmitPost

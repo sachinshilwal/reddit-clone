@@ -6,7 +6,7 @@
     </div>
     <p ref="comment" id="comments">  
     </p>
-    <div class="comment-buttom">{{upVote}} vote</div>
+    <div class="comment-buttom">{{upVote}} vote  <span> View reply</span></div> 
 </div>
 </template>
 <script>

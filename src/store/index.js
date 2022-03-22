@@ -10,7 +10,8 @@ export default createStore({
       isLoggedIn: false,
       isAuthorized: false,
       refresh: false,
-      user: ''
+      user: '',
+      filterChanged: false,
 
     }
   },
@@ -22,6 +23,10 @@ export default createStore({
     },
     REFRESH(state) {
       state.refresh = true
+    },
+    FILTER_CHANGED(state) {
+      state.filterChanged = true
+      console.log('filter changed')
     }
   },
   actions: {                                       //equivalent to methods in Vue. these commit the mutations so demands commit as the parameter
