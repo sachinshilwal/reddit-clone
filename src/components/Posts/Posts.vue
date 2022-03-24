@@ -234,6 +234,7 @@ export default {
 }
 .post-comment{
   &:hover {
+    
   }
 }
 
