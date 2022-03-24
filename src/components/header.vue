@@ -42,7 +42,12 @@
       
       <i class="fas fa-sort-down"></i>
     </div>
+    <span class="profileInfo" style=" border: 1px solid white; " v-if="popUpValue">
+      <div style="font-size: 1em; margin-top:10px"> <a style="text-decoration:none" :href="`http://reddit.com/user/${this.$store.state.user.name}`" target="_blank" rel="noopener noreferrer">Profile On Reddit</a> </div>
+      <div @click="logOut" style="margin-top:10px; cursor: pointer;">Sign Out</div>
+    </span>
   </div>
+  
 </template>
 
 <script>
@@ -55,7 +60,7 @@ export default {
     Profile
   },
   mounted(){
-    
+    console.log(this.$store.state.user)
   },
   data(){
     return{
@@ -70,7 +75,13 @@ export default {
       this.$emit("goToHome", true);
     },
     popUp(){
+      console.log('pop up');
       this.popUpValue = !this.popUpValue;
+    },
+    logOut(){
+      localStorage.removeItem('userinfo');
+      this.$router.go('/');
+      console.log('logged out');
     }
   },
   computed:{
@@ -95,7 +106,22 @@ export default {
   color: white;
   z-index: 9999;
 }
-
+.profileInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 15%;
+  background-color: rgb(0, 0, 0);
+  color: rgb(209, 202, 202);
+  position: absolute;
+  top: 50px;
+  right: 0;
+  margin-right:11%;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s;
+}
 .header__logo {
   display: flex;
   align-items: center;

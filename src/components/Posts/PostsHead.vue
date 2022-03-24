@@ -21,7 +21,7 @@
             >u/{{ post.author}} </a>
             <span class="posted-time">{{ time }}
                <!-- <span class="date-hover">{{new Date(post.created)}}</span> -->
-            </span> {{ post.domain }}
+            </span> <a style="color:green" :href="`${post.url}`" target="_blank" rel="noopener noreferrer">{{ post.domain }}</a> 
           </p>
         </div>
       </div>   
