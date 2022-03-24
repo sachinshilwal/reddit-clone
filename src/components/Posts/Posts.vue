@@ -154,7 +154,7 @@ export default {
           video.setAttribute("preload", "auto")
           video.setAttribute("width", "400px")
 
-          video.setAttribute("height", "auto")
+          video.setAttribute("height", "600")
           this.$refs.media.appendChild(video)
           
           // this.$refs.ok.addEventListener('click', function () {
@@ -219,7 +219,7 @@ export default {
 .post {
   margin-top: 20px;
   height: auto;
-  background-color: rgb(37, 36, 36);
+  background-color: rgb(8, 7, 7);
   display: flex;
   align-items: left !important;
   border-radius: 5px;
@@ -234,7 +234,6 @@ export default {
 }
 .post-comment{
   &:hover {
-    border: 1px solid #d3d1d1;
   }
 }
 
@@ -242,7 +241,7 @@ export default {
   width: 20px;
   display: flex;
   flex-direction: column;
-  background-color: rgb(37, 36, 36);
+  background-color: rgb(8, 7, 7);
   padding: 10px;
 }
 
@@ -356,7 +355,7 @@ export default {
 .post__footer {
   display: flex !important;
   color: #7e8081;
-  background-color: rgb(37, 36, 36) !important;
+  background-color: rgb(8, 7, 7) !important;
   font-size: 12px;
   flex-direction: row !important;
   margin-top: 0px !important;

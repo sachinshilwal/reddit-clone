@@ -1,5 +1,5 @@
 <template>
-        <div class="profile__details" >
+        <div class="profile__details" @click="profileClick">
         <img :src="infos.icon_img" height="31.2" width="31.2" alt="" style="background-color:rgb(32, 34, 34); border-radius: 60%">
         <div class="user__profile">
           {{infos.name   &nbsp;  }}  
@@ -54,6 +54,11 @@
       data(){
         return{
           prettyKarma: ''
+        }
+      },
+      methods:{
+        profileClick(){
+          
         }
       },
         computed:{
