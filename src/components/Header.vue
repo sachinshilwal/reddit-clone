@@ -222,6 +222,7 @@ export default {
   border-right: 1px solid #dae0e6;
 }
 
+
 .get__coins {
   display: flex;
   align-items: center;

@@ -2,11 +2,7 @@
 <div class="post-comment" @click="postClicked">
   <div class="post" >
     <div class="left__vote__icons">
-      <i :class="`fas fa-arrow-alt-up ${upVoted ? 'red' : ''}`" @click="increaseVoteCount()"></i>
-
-      <span :class="`vote__count ${upVoted ? 'red' : downVoted ? 'blue' : ''}`">{{ upVote }}</span>
-
-      <i :class="`fas fa-arrow-alt-down ${downVoted ? 'blue' : ''}`" @click="decreaseVoteCount()"></i>
+     <PostVote :upVote="upVote"/> 
     </div>
     <div class="post__content">
      <PostsHead :post="post" :subredditLogo="subredditLogo" :time="time"/>
@@ -26,6 +22,7 @@
         <div class="post__image"  ref="media">
           <!-- <img src="https://picsum.photos/200/300" alt="" /> -->
         </div>
+        
         </a>
       </div>
       <div class="post__footer">
@@ -50,9 +47,10 @@ import PostsHead from './PostsHead.vue'
 import PostFooter from './PostFooter.vue'
 import Comments from './Comments.vue'
 import axiosrequest from '../../Services/AxiosRequest.js'
+import PostVote from './PostVote.vue'
 
 export default {
-  components:{PostsHead, PostFooter,Comments},
+  components:{PostsHead, PostFooter,Comments,PostVote},
   props: ['post'],
   async mounted() {
     console.log(this.post)
@@ -91,20 +89,7 @@ export default {
                     
                 })
             },
-    increaseVoteCount() {
-      if (this.upVoted) {
-        this.voteCount = "";
-        return;
-      }
-      this.voteCount = VOTE_COUNT + 1;
-    },
-    decreaseVoteCount() {
-      if (this.downVoted) {
-        this.voteCount = "";
-        return;
-      }
-      this.voteCount = VOTE_COUNT - 1;
-    },
+   
     roundUpVote() {
       if (this.post.ups > 10000) {
         let upVote = Math.round(this.post.ups / 1000)
