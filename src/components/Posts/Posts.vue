@@ -154,7 +154,7 @@ export default {
           video.setAttribute("preload", "auto")
           video.setAttribute("width", "400px")
 
-          video.setAttribute("height", "600")
+          video.setAttribute("height", "400px")
           this.$refs.media.appendChild(video)
           
           // this.$refs.ok.addEventListener('click', function () {
