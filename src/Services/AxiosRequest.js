@@ -24,6 +24,9 @@ export default {
     oauth(request){
         return oauthApi.get(request)
 
+    },
+    Vote(request){
+        return oauthApi.post(request)
     }
 }
 

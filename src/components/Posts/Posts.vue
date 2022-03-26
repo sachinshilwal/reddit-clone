@@ -2,7 +2,7 @@
 <div class="post-comment" @click="postClicked">
   <div class="post" >
     <div class="left__vote__icons">
-     <PostVote :upVote="upVote"/> 
+     <PostVote :upVote="upVote" :post="post"/> 
     </div>
     <div class="post__content">
      <PostsHead :post="post" :subredditLogo="subredditLogo" :time="time"/>
@@ -53,7 +53,6 @@ export default {
   components:{PostsHead, PostFooter,Comments,PostVote},
   props: ['post'],
   async mounted() {
-    console.log(this.post)
     this.roundUpVote()
     this.getAwards()
     this.mountMedia()

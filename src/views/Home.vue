@@ -37,7 +37,7 @@ export default {
   name: "App",
   async mounted() {
      this.$router.replace('/top.json?t=day', { silent: true })
-    await axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
+    await axiosrequest.oauth('https://oauth.reddit.com/top.json?t=day')
       .then(response => {
         this.postsData = response.data.data.children.map(data => data.data)
         console.log(this.postsData)
@@ -86,7 +86,7 @@ export default {
       this.$store.commit('FILTER_CHANGED')
       if (val == 'Top') {
         this.$router.replace('/top.json?t=day', { silent: true })
-        axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
+        axiosrequest.oauth('https://oauth.reddit.com/top.json?t=day')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
           
@@ -95,7 +95,7 @@ export default {
       }
       else if (val == 'New') {
         this.$router.replace('/new', { silent: true })
-        axiosrequest.getdata('https://www.reddit.com/new.json')
+        axiosrequest.oauth('https://oauth.reddit.com/new.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
             console.log(this.postsData)
@@ -105,7 +105,7 @@ export default {
       }
       else if (val == 'Hot') {
         this.$router.replace('/hot', { silent: true })
-        axiosrequest.getdata('https://www.reddit.com/hot.json')
+        axiosrequest.oauth('https://oauth.reddit.com/hot.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
           
@@ -114,7 +114,7 @@ export default {
       }
       else if (val == 'Best') {
         this.$router.replace('/best', { silent: true })
-        axiosrequest.getdata('https://www.reddit.com/best.json')
+        axiosrequest.oauth('https://oauth.reddit.com/best.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
            
@@ -123,7 +123,7 @@ export default {
       }
       else if (val == 'Controversial') {
         this.$router.replace('/controversial', { silent: true })
-        axiosrequest.getdata('https://www.reddit.com/controversial.json')
+        axiosrequest.oauth('https://oauth.reddit.com/controversial.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
            
@@ -132,7 +132,7 @@ export default {
       }
       else if (val == 'Rising') {
         this.$router.replace('/rising', { silent: true })
-        axiosrequest.getdata('https://www.reddit.com/rising.json')
+        axiosrequest.oauth('https://oauth.reddit.com/rising.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
             

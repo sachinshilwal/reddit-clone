@@ -19,13 +19,13 @@ export default{
        async loadMore(){
             console.log(this.$route.fullPath)
             if(this.morePosts === ''){
-                await axiosrequest.getdata('https://www.reddit.com/'+this.$route.fullPath+'&after='+this.post[this.post.length-1].name)
+                await axiosrequest.oauth('https://oauth.reddit.com/'+this.$route.fullPath+'&after='+this.post[this.post.length-1].name)
                 .then(response => {
                     this.morePosts = response.data.data.children.map(data => data.data)
                 })
             .catch(err => console.log(err))}
             else{
-                await axiosrequest.getdata('https://www.reddit.com/'+this.$route.fullPath+'&after='+this.morePosts[this.morePosts.length-1].name)
+                await axiosrequest.oauth('https://oauth.reddit.com/'+this.$route.fullPath+'&after='+this.morePosts[this.morePosts.length-1].name)
                 .then(response => {
                     this.morePosts = this.morePosts.concat(response.data.data.children.map(data => data.data))
                 })

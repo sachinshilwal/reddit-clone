@@ -7,50 +7,98 @@
 </template>
 
 <script>
-export const VOTE_COUNT = 15;
+import Axios from "../../Services/AxiosRequest.js";
+
 export default {
-  props: ["upVote"],
+  props: ["upVote", "post"],
+  mounted() {
+    this.voteStatus();
+  },
+ 
   data() {
     return {
-      VOTE_COUNT,
       upVoted: false,
       downVoted: false,
+
       voteCount: "",
       isLoggedIn: this.$store.state.isLoggedIn,
     };
   },
   methods: {
+    voteStatus() {
+      if (this.post.likes === true) {
+        this.upVoted = true;
+        this.downVoted = false;
+      } else if (this.post.likes === false) {
+        this.downVoted = true;
+        this.upVoted = false;
+      }
+      else{
+        this.upVoted = false
+        this.downVoted = false
+      }
+    },
     increaseVoteCount() {
-      console.log(this.$store.state.isLoggedIn);
+      
       if (this.isLoggedIn) {
-        if (this.upVoted) {
-          this.voteCount = "";
+        if(this.upVoted === false) {
+          console.log(this.upVoted)
+          this.upVoted = true;
+          console.log(this.upVoted);
+          this.downVoted = false;
+          console.log('upvoted')
+          Axios.Vote(
+            `https://oauth.reddit.com/api/vote?raw_json=1&id=${this.post.name}&dir=1`
+          ).then((res) => {
+            console.log(res);
+          });
           return;
+        } else if (this.upVoted) {
+
+          this.upVoted = false;
+          console.log('unvoted')
+          this.unVote();
+          
+          return;
+
         }
-        this.voteCount = VOTE_COUNT + 1;
       }
     },
     decreaseVoteCount() {
       if (this.isLoggedIn) {
-        if (this.downVoted) {
-          this.voteCount = "";
+        if (!this.downVoted) {
+          this.downVoted = true;
+          this.upVoted = false;
+          Axios.Vote(
+            `https://oauth.reddit.com/api/vote?raw_json=1&id=${this.post.name}&dir=-1`
+          ).then((res) => {
+            console.log(res);
+          });
+          return;
+        } else if (this.downVoted) {
+          this.downVoted = false;
+          this.unVote();
           return;
         }
-        this.voteCount = VOTE_COUNT - 1;
+      }
+    },
+    unVote() {
+      if (this.isLoggedIn) {
+        Axios.Vote(
+          `https://oauth.reddit.com/api/vote?raw_json=1&id=${this.post.name}&dir=0`
+        ).then((res) => {
+          console.log(res);
+        });
+        return;
       }
     },
   },
   watch: {
-    voteCount() {
-      if (this.voteCount == this.VOTE_COUNT - 1) {
-        this.upVoted = false;
-        this.downVoted = true;
-      } else if (this.voteCount == this.VOTE_COUNT + 1) {
-        this.downVoted = false;
-        this.upVoted = true;
-      } else {
-        this.downVoted = this.upVoted = false;
-      }
+    "$store.state.filterChanged": function (val) {
+      console.log(val);
+
+      this.upVoted = false;
+      this.downVoted = false;
     },
   },
 };
