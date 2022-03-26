@@ -37,7 +37,8 @@ export default {
   name: "App",
   async mounted() {
      this.$router.replace('/top.json?t=day', { silent: true })
-    await axiosrequest.oauth('https://oauth.reddit.com/top.json?t=day')
+     if(this.$store.state.isLoggedIn){
+       await axiosrequest.oauth('https://oauth.reddit.com/top.json?t=day')
       .then(response => {
         this.postsData = response.data.data.children.map(data => data.data)
         console.log(this.postsData)
@@ -45,6 +46,20 @@ export default {
       })
       .catch(err => console.log(err))
      this.checkRoute()
+     }
+    else{
+      console.log('not logged in')
+      
+       await axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
+      .then(response => {
+        this.postsData = response.data.data.children.map(data => data.data)
+        console.log(this.postsData)
+        
+      })
+      .catch(err => console.log(err))
+     this.checkRoute()
+    
+    }
   },
   data() {
     return {
@@ -84,7 +99,8 @@ export default {
       },
     filter(val) {
       this.$store.commit('FILTER_CHANGED')
-      if (val == 'Top') {
+      if(this.$store.state.isLoggedIn){
+         if (val == 'Top') {
         this.$router.replace('/top.json?t=day', { silent: true })
         axiosrequest.oauth('https://oauth.reddit.com/top.json?t=day')
           .then(response => {
@@ -139,6 +155,66 @@ export default {
           })
           .catch(err => console.log(err))
       }
+      }
+      else {
+         if (val == 'Top') {
+        this.$router.replace('/top.json?t=day', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+          
+          })
+          .catch(err => console.log(err))
+      }
+      else if (val == 'New') {
+        this.$router.replace('/new', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/new.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+            console.log(this.postsData)
+            
+          })
+          .catch(err => console.log(err))
+      }
+      else if (val == 'Hot') {
+        this.$router.replace('/hot', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/hot.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+          
+          })
+          .catch(err => console.log(err))
+      }
+      else if (val == 'Best') {
+        this.$router.replace('/best', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/best.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+           
+          })
+          .catch(err => console.log(err))
+      }
+      else if (val == 'Controversial') {
+        this.$router.replace('/controversial', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/controversial.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+           
+          })
+          .catch(err => console.log(err))
+      }
+      else if (val == 'Rising') {
+        this.$router.replace('/rising', { silent: true })
+        axiosrequest.getdata('https://www.reddit.com/rising.json')
+          .then(response => {
+            this.postsData = response.data.data.children.map(data => data.data)
+            
+          })
+          .catch(err => console.log(err))
+      }
+      }
+      
+     
     }
   },
   components: {
