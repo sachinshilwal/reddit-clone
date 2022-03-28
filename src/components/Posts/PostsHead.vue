@@ -1,6 +1,7 @@
 <template>
   <div class="post__head">
-        <a
+    <span style="display:inline; white-space:nowarp">
+        <a 
           :href="'https://www.reddit.com/r/' + post.subreddit"
           target="_blank"
         >
@@ -11,7 +12,8 @@
             <strong>r/{{ post.subreddit }}</strong>
           </span>
         </a>
-        <div class="post__details">
+    </span>
+        <div class="post__details" style="display:inline; white-space:nowarp">
           <p>
             . Posted by
             <a
@@ -21,13 +23,28 @@
             >u/{{ post.author}} </a>
             <span class="posted-time">{{ time }}
                <!-- <span class="date-hover">{{new Date(post.created)}}</span> -->
-            </span> <a style="color:green" :href="`${post.url}`" target="_blank" rel="noopener noreferrer">{{ post.domain }}</a> 
+            </span> <a style="color:green" :href="`${post.url}`" target="_blank" rel="noopener noreferrer">{{ post.domain }} &nbsp; </a> 
+        
           </p>
+          
         </div>
+        <div><Awards v-for="(award , index) in post.all_awardings" :key="index" :award="award"/></div>
+        
       </div>   
 </template>
 <script>
+import Awards from './Awards'
     export default{
-        props: ['post','subredditLogo','time'],
+      components:{Awards},
+      props: ['post','subredditLogo','time'],
+      mounted(){
+        
+      }
+
     }
 </script>
+<style>
+  .post__head{
+    font-size: 0.8em;
+  }
+</style>

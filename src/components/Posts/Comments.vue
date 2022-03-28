@@ -4,24 +4,38 @@
         <a :href="'https://reddit.com/user/'+comment.data.author" target="_blank"><span>{{comment.data.author}}</span></a>
         . {{time}}
     </div>
+    
     <p ref="comment" id="comments">  
+    
     </p>
-    <div class="comment-buttom">{{upVote}} vote  <span> View reply</span></div> 
+    
+    <div class="comment-buttom">{{upVote}} vote  <span> View reply</span></div>
+    <div v-if="comment.data.replies !== '' && comment.data.replies" class="replies"><CommentReplies  v-for="(reply, index) in comment.data.replies.data.children" :key="index" :reply="reply"/></div>
+     
+     
 </div>
 </template>
 <script>
 import dayjs from 'dayjs'
+import CommentReplies from './CommentReplies.vue'
     export default {
-        props: ['comment'],
+        props: ['comment','replies'],
+        components:{CommentReplies},
         data(){
             return{time: "",
                   upVote:'',}
             
         },
         mounted() {
+            
             this.$refs.comment.innerHTML = this.comment.data.body
             this.formatTime(this.comment.data.created)
             this.roundUpVote()
+            if(this.comment.data.replies){
+                // console.log(this.comment.data.replies.data.children)
+                }
+            
+           
             
         },
         methods:{
@@ -47,7 +61,7 @@ import dayjs from 'dayjs'
 <style scoped>
 .comments{
     padding: 8px;
-    border-bottom: 1px solid #e6e6e6;
+    
 }
     div ,p{
         
@@ -61,6 +75,7 @@ import dayjs from 'dayjs'
     #comments{
         font-family: Noto Sans,Arial,sans-serif;
         font-size: 0.8em;
+        padding-left: 20px;
         color: white;
     }
     a{
@@ -70,5 +85,11 @@ import dayjs from 'dayjs'
         font-size: 0.7em;
         color: #e6e6e6;
         text-align: left;
+        padding-left: 20px;
+        padding-bottom: 20px;
     }
+    .replies{
+    
+    }
+    
 </style>

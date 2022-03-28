@@ -33,7 +33,7 @@
     
   </div>
   <div v-if="showComment">
-    <Comments  v-for="(comment, index) in comments" :key="index" :comment="comment"  />
+    <Comments  v-for="(comment, index) in comments" :key="index" :comment="comment" :replies="comment.data.replies" />
   </div>
   </div>
 </template>
@@ -53,6 +53,7 @@ export default {
   components:{PostsHead, PostFooter,Comments,PostVote},
   props: ['post'],
   async mounted() {
+    
     this.roundUpVote()
     this.getAwards()
     this.mountMedia()
@@ -168,6 +169,11 @@ export default {
         a.innerText = "Link(external URL)"
         this.$refs.media.appendChild(a)
       }
+      else if(this.post.selftext){
+        let p = document.createElement("P")
+        p.innerHTML = this.post.selftext
+        this.$refs.media.appendChild(p)
+      }
     },
     resetMedia() {
       this.$refs.media.innerHTML = ""
@@ -193,6 +199,7 @@ export default {
       this.roundUpVote()
       this.mountMedia()
       this.formatTime(this.post.created)
+      console.log(this.post)
     }
 
   }

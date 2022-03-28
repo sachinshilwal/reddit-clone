@@ -5,15 +5,16 @@
           <span>{{ post.num_comments }} comments </span>
       </div>
     
-          <i class="fas fa-gift"></i>
-          <span>Give Award</span>
+         
     </div>
-          <i class="fas fa-share"></i>
-          <span>Share</span>
+    <div @click="copyToClipboard" title="copy to clipboard"> <i class="fas fa-share"></i>
+          <span>  Share</span>
+          </div>
+         
       
-        
-          <i class="fas fa-bookmark"></i>
-          <span>Save</span>
+        <div><i class="fas fa-bookmark"></i>
+          <span>  Save</span></div>
+          
         
         <div class="post__item">
           <i class="fas fa-ellipsis-h"></i>
@@ -35,6 +36,11 @@
             showComment: false,
           }
         },
+        methods:{
+          copyToClipboard(){
+            navigator.clipboard.writeText(`https://www.reddit.com${this.post.permalink}`)
+          },
+        }
     }
 </script>
 
