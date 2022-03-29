@@ -20,7 +20,7 @@
         </div>
         <a :href="post.url" target="_blank">
         <div class="post__image"  ref="media">
-          <!-- <img src="https://picsum.photos/200/300" alt="" /> -->
+          
         </div>
         
         </a>
@@ -34,6 +34,7 @@
   </div>
   <div v-if="showComment">
     <Comments  v-for="(comment, index) in comments" :key="index" :comment="comment" :replies="comment.data.replies" />
+    <img v-if="loading" src="../../assets/svgs/loading.svg" alt="" class="loadingIcon" width="50px" height="50px">
   </div>
   </div>
 </template>
@@ -73,6 +74,7 @@ export default {
       time: "",
       showComment: false,
       comments:[],
+      loading: true,
 
     };
   },
@@ -85,7 +87,7 @@ export default {
                 axiosrequest.oauth(`https://oauth.reddit.com${this.post.permalink}`)
                 .then(res => {
                     this.comments = res.data[1].data.children
-                               
+                    this.loading = false           
                     
                 })
             },
@@ -207,6 +209,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .post {
   margin-top: 20px;
   height: auto;
@@ -385,5 +388,12 @@ export default {
 
 ::-webkit-scrollbar-thumb {
   background: black;
+}
+.loadingIcon{
+  margin: 0 auto;
+  display: block;
+  width: 50px;
+  height: 50px;
+  animation: loading 1s infinite;
 }
 </style>

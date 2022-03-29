@@ -5,8 +5,12 @@
       <div class="body__left">
         <CreatePost @change="page = 'Submit'" />
         <FilterTags :tags="tags" @selected="changeFilter" />
+        <img v-if="loading" src="../assets/svgs/loading.svg" alt="" class="loadingIcon">
+        <div v-if="!loading"> 
         <Posts v-for="(postData, index) in postsData" :key="index" :post="postData"></Posts>
+       
         <MorePosts :post="postsData" ></MorePosts>
+        </div>
       </div>
       <div class="body__right">
         <!-- <TopGrowingCard />
@@ -41,6 +45,7 @@ export default {
        await axiosrequest.oauth('https://oauth.reddit.com/top.json?t=day')
       .then(response => {
         this.postsData = response.data.data.children.map(data => data.data)
+        this.loading = false
         console.log(this.postsData)
         
       })
@@ -66,6 +71,7 @@ export default {
       page: "Home",
       postsData: '',
       filter: '',
+      loading: true,
     };
   },
   methods: {
@@ -80,6 +86,10 @@ export default {
         this.filter = 'new'
       }
       },
+      changeLoading(){
+        this.loading = true
+        console.log('loading')
+      }
     },
   computed: {
     tags() {
@@ -98,6 +108,7 @@ export default {
        location.reload()
       },
     filter(val) {
+      this.loading = true
       this.$store.commit('FILTER_CHANGED')
       if(this.$store.state.isLoggedIn){
          if (val == 'Top') {
@@ -105,6 +116,7 @@ export default {
         axiosrequest.oauth('https://oauth.reddit.com/top.json?t=day')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
+            this.loading = false
           
           })
           .catch(err => console.log(err))
@@ -114,7 +126,7 @@ export default {
         axiosrequest.oauth('https://oauth.reddit.com/new.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
-            console.log(this.postsData)
+            this.loading = false
             
           })
           .catch(err => console.log(err))
@@ -124,6 +136,7 @@ export default {
         axiosrequest.oauth('https://oauth.reddit.com/hot.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
+            this.loading = false
           
           })
           .catch(err => console.log(err))
@@ -133,6 +146,7 @@ export default {
         axiosrequest.oauth('https://oauth.reddit.com/best.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
+            this.loading = false
            
           })
           .catch(err => console.log(err))
@@ -142,6 +156,7 @@ export default {
         axiosrequest.oauth('https://oauth.reddit.com/controversial.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
+            this.loading = false
            
           })
           .catch(err => console.log(err))
@@ -151,6 +166,7 @@ export default {
         axiosrequest.oauth('https://oauth.reddit.com/rising.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
+            this.loading = false
             
           })
           .catch(err => console.log(err))
@@ -162,6 +178,7 @@ export default {
         axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
+            this.loading = false
           
           })
           .catch(err => console.log(err))
@@ -171,6 +188,7 @@ export default {
         axiosrequest.getdata('https://www.reddit.com/new.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
+            this.loading = false
             console.log(this.postsData)
             
           })
@@ -181,7 +199,7 @@ export default {
         axiosrequest.getdata('https://www.reddit.com/hot.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
-          
+            this.loading = false
           })
           .catch(err => console.log(err))
       }
@@ -190,7 +208,7 @@ export default {
         axiosrequest.getdata('https://www.reddit.com/best.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
-           
+             this.loading = false
           })
           .catch(err => console.log(err))
       }
@@ -199,7 +217,7 @@ export default {
         axiosrequest.getdata('https://www.reddit.com/controversial.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
-           
+             this.loading = false
           })
           .catch(err => console.log(err))
       }
@@ -208,7 +226,7 @@ export default {
         axiosrequest.getdata('https://www.reddit.com/rising.json')
           .then(response => {
             this.postsData = response.data.data.children.map(data => data.data)
-            
+              this.loading = false
           })
           .catch(err => console.log(err))
       }
@@ -244,7 +262,10 @@ export default {
 .home__body .body__left {
   height: auto;
 }
-
+.loadingIcon{
+  height: 100px;
+  width:100px;
+}
 .home__body .body__right {
   height: auto;
 }
