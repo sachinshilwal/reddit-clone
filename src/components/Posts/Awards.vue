@@ -1,5 +1,5 @@
 <template>
-<span><img :src="awardIcon" > {{award.count}} </span>
+<span><img :src="awardIcon" > <span style="margin-top: -12px;">{{award.count}}</span> </span>
   
 </template>
 
