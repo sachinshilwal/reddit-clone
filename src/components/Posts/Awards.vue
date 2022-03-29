@@ -7,7 +7,7 @@
 export default {
     props:['award'],
     mounted(){
-        console.log(this.award)
+        
         
     },
     data(){

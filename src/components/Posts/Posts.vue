@@ -85,7 +85,7 @@ export default {
                 axiosrequest.oauth(`https://oauth.reddit.com${this.post.permalink}`)
                 .then(res => {
                     this.comments = res.data[1].data.children
-                    console.log(this.comments)               
+                               
                     
                 })
             },
