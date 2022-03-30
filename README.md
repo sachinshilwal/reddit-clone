@@ -24,7 +24,7 @@ npm run test:e2e
 ```
 npm run lint
 ```
-###Live Demo
+### Live Demo
 [Netlify](https://redditcloneorsomethingidk.netlify.app/)
 
 ### Customize configuration
