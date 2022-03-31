@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 
 export interface MainStore {
+  isMenuOpen: boolean
   userInfo: string
   isLoggedIn: boolean
   isAuthorized: boolean
@@ -9,9 +10,10 @@ export interface MainStore {
   filterChanged: boolean
 }
 
-export const useCounterStore = defineStore({
-  id: "counter",
+export const useMainStore = defineStore({
+  id: "main",
   state: (): MainStore => ({
+    isMenuOpen: false,
     userInfo: "",
     user: "",
     isAuthorized: false,
@@ -23,6 +25,9 @@ export const useCounterStore = defineStore({
     // doubleCount: (state) => state.counter * 2
   },
   actions: {
+    setMenuOpen(payload: boolean) {
+      this.isMenuOpen = payload
+    },
     setUserinfo() {
       console.log("new userinfo")
     },
