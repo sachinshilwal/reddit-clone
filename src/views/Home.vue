@@ -49,7 +49,9 @@ export default {
         console.log(this.postsData)
         
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        
+        console.log(err)})
      this.checkRoute()
      }
     else{
@@ -58,6 +60,7 @@ export default {
        await axiosrequest.getdata('https://www.reddit.com/top.json?t=day')
       .then(response => {
         this.postsData = response.data.data.children.map(data => data.data)
+        this.loading = false
         console.log(this.postsData)
         
       })

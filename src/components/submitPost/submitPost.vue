@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import Markdown from "./componentsInIt/markdown";
-import RedditRules from "./componentsInIt/redditRules";
-import LinksCard from "./componentsInIt/linksCard";
+import Markdown from "./componentsInIt/Markdown";
+import RedditRules from "./componentsInIt/RedditRules";
+import LinksCard from "./componentsInIt/LinksCard";
 export default {
   components: {
     Markdown,
