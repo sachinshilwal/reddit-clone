@@ -6,7 +6,8 @@
 </script>
 
 <template>
-  <header class="app-header border-b border-b-gray-dark bg-medium relative">
+  <header
+    class="app-header border-b border-b-gray-dark bg-medium sticky top-0 left-0 z-10">
     <div
       class="py-1 px-6 flex justify-between items-center gap-4 text-gray-light">
       <header-logo />

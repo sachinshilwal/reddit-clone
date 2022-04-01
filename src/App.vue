@@ -4,10 +4,16 @@
 </script>
 
 <template>
-  <app-header />
-  <RouterView />
+  <div class="min-h-screen grid app-container">
+    <app-header />
+    <RouterView />
+  </div>
 </template>
 
 <style>
   @import "@/assets/base.css";
+
+  .app-container {
+    grid-template-rows: auto 1fr;
+  }
 </style>
